@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sai Chaitanya Dhanisetty — Software Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080c10;
+      --surface: #0d1117;
+      --accent: #00ffc8;
+      --accent2: #ff4d6d;
+      --accent3: #4d9fff;
+      --text: #c9d1d9;
+      --muted: #484f58;
+      --border: #21262d;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,200,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,200,0.025) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(0,255,200,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(8,12,16,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+    }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.62rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 7rem 0 4rem;
+    }
+
+    .tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      line-height: 0.92;
+      letter-spacing: 0.03em;
+      color: #fff;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .hero-name .highlight { color: var(--accent); }
+
+    .hero-title-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      padding: 0.4rem 1rem;
+      border: 1px solid var(--accent);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0;
+      animation: fadeUp 0.6s 0.6s forwards;
+    }
+
+    .dot {
+      width: 6px; height: 6px;
+      background: var(--accent2);
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .hero-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 1.8rem;
+      line-height: 1.9;
+      max-width: 580px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+    .hero-sub strong { color: var(--text); }
+
+    .contact-row {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 1s forwards;
+    }
+
+    .contact-item {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .contact-item a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .contact-item a:hover { color: var(--accent); }
+
+    .cta-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 1.1s forwards;
+    }
+
+    .btn {
+      padding: 0.7rem 1.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+    .btn-primary { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+    .btn-primary:hover { background: transparent; color: var(--accent); }
+    .btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .stats {
+      display: flex;
+      gap: 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 4rem 0;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s 1.3s forwards;
+    }
+
+    .stat-item {
+      flex: 1;
+      min-width: 130px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      padding: 2rem 1.5rem;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .section-eyebrow {
+      font-size: 0.62rem;
+      color: var(--accent2);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: 0.08em;
+      color: #fff;
+      margin-bottom: 2rem;
+    }
+
+    .experience { margin-bottom: 5rem; }
+
+    .exp-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.8rem;
+      margin-bottom: 1rem;
+      position: relative;
+      transition: border-color 0.25s;
+    }
+
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      transition: width 0.4s;
+    }
+
+    .exp-card:hover { border-color: rgba(0,255,200,0.3); }
+    .exp-card:hover::before { width: 100%; }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .exp-company { font-size: 1rem; color: #fff; font-weight: 700; }
+    .exp-period { font-size: 0.62rem; color: var(--accent); letter-spacing: 0.1em; white-space: nowrap; }
+    .exp-role { font-size: 0.7rem; color: var(--accent3); letter-spacing: 0.1em; margin-bottom: 1rem; }
+    .exp-client { font-size: 0.62rem; color: var(--muted); }
+
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .exp-bullets li {
+      font-size: 0.7rem;
+      color: var(--muted);
+      line-height: 1.7;
+      padding-left: 1rem;
+      position: relative;
+    }
+    .exp-bullets li::before { content: '›'; position: absolute; left: 0; color: var(--accent); }
+
+    .exp-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.2rem; }
+
+    .tech-pill {
+      font-size: 0.6rem;
+      color: var(--accent3);
+      background: rgba(77,159,255,0.07);
+      border: 1px solid rgba(77,159,255,0.2);
+      padding: 0.2rem 0.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .skills-section { margin-bottom: 5rem; }
+    .skills-group { margin-bottom: 2rem; }
+    .skills-group-title {
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 0.8rem;
+    }
+
+    .skills-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+    .skill-chip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.45rem 0.9rem;
+      font-size: 0.68rem;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      transition: all 0.2s;
+      cursor: default;
+    }
+    .skill-chip:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,255,200,0.04); }
+
+    .certs { margin-bottom: 5rem; }
+    .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+
+    .cert-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.2rem 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .cert-card:hover { border-color: var(--accent2); }
+
+    .cert-badge {
+      font-size: 0.6rem;
+      color: var(--accent2);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .cert-name { font-size: 0.78rem; color: #fff; line-height: 1.5; }
+
+    .education { margin-bottom: 5rem; }
+
+    .edu-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1rem;
+      transition: border-color 0.2s;
+    }
+    .edu-card:hover { border-color: var(--accent3); }
+
+    .edu-degree { font-size: 0.85rem; color: #fff; font-weight: 700; margin-bottom: 0.3rem; }
+    .edu-school { font-size: 0.68rem; color: var(--accent3); letter-spacing: 0.05em; }
+    .edu-period { font-size: 0.62rem; color: var(--muted); letter-spacing: 0.1em; white-space: nowrap; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--muted); letter-spacing: 0.1em; }
+    .footer-links { display: flex; gap: 2rem; }
+    .footer-links a { font-size: 0.62rem; color: var(--muted); text-decoration: none; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.85em;
+      background: var(--accent);
+      vertical-align: middle;
+      margin-left: 6px;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .stat-item { padding: 1.2rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">SCD // hawkh</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#certs">Certs</a></li>
+    <li><a href="https://github.com/hawkh" target="_blank">GitHub ↗</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <section class="hero" id="about">
+    <p class="tag">// github.com/hawkh · United States</p>
+    <h1 class="hero-name">
+      SAI<br/>
+      <span class="highlight">CHAITANYA</span><br/>
+      DHANISETTY<span class="cursor"></span>
+    </h1>
+    <div class="hero-title-badge">
+      <span class="dot"></span>
+      Software Engineer II · Full Stack Developer
+    </div>
+    <p class="hero-sub">
+      <strong>4+ years</strong> designing scalable microservices and cloud-native applications.
+      Accelerated CI/CD pipelines by <strong>40%</strong>. Built event-driven architectures with
+      RabbitMQ & CQRS. Secure REST APIs with OAuth 2.0 & JWT.
+      Applied AI/ML models with Python & Kafka. Currently building at <strong>UKG Inc</strong>.
+    </p>
+    <div class="contact-row">
+      <div class="contact-item">✉ <a href="mailto:dhanisetty.chaitanya@gmail.com">dhanisetty.chaitanya@gmail.com</a></div>
+      <div class="contact-item">◈ <a href="https://linkedin.com/in/SaiChaitanya" target="_blank">linkedin.com/in/SaiChaitanya</a></div>
+      <div class="contact-item">◎ +1 (716) 247-3874</div>
+    </div>
+    <div class="cta-row">
+      <a href="https://github.com/hawkh" target="_blank" class="btn btn-primary">View GitHub →</a>
+      <a href="https://linkedin.com/in/SaiChaitanya" target="_blank" class="btn btn-ghost">LinkedIn ↗</a>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="stat-item"><span class="stat-num">4+</span><span class="stat-label">Years Exp.</span></div>
+    <div class="stat-item"><span class="stat-num">40%</span><span class="stat-label">CI/CD Speedup</span></div>
+    <div class="stat-item"><span class="stat-num">30%</span><span class="stat-label">Incident Reduction</span></div>
+    <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">Cloud Platforms</span></div>
+    <div class="stat-item"><span class="stat-num">3</span><span class="stat-label">Certifications</span></div>
+  </div>
+
+  <section class="experience" id="experience">
+    <p class="section-eyebrow">// work history</p>
+    <h2 class="section-title">Experience</h2>
+
+    <div class="exp-card">
+      <div class="exp-header">
+        <div class="exp-company">UKG Inc</div>
+        <div class="exp-period">June 2025 – Present</div>
+      </div>
+      <div class="exp-role">Software Engineer II</div>
+      <ul class="exp-bullets">
+        <li>Architected cloud-native microservices integration platform using Java 8/11, Spring Boot & GCP for enterprise data exchange between vendors and customers.</li>
+        <li>Engineered CI/CD pipelines via GitHub Actions, Docker & Kubernetes — automating Helm deployments and accelerating release cycles by 40%.</li>
+        <li>Designed event-driven solutions with RabbitMQ and CQRS for real-time data processing and seamless REST/SOAP/SFTP third-party integration.</li>
+        <li>Implemented distributed monitoring with Grafana & Prometheus, reducing incident response times by 30%.</li>
+      </ul>
+      <div class="exp-tech">
+        <span class="tech-pill">Java 8/11</span><span class="tech-pill">Spring Boot</span><span class="tech-pill">Angular 12+</span><span class="tech-pill">RabbitMQ</span><span class="tech-pill">CQRS</span><span class="tech-pill">GCP</span><span class="tech-pill">Kubernetes</span><span class="tech-pill">MongoDB</span><span class="tech-pill">Grafana</span><span class="tech-pill">Prometheus</span>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-header">
+        <div class="exp-company">Everest Computers Inc <span class="exp-client">· Delta Airlines</span></div>
+        <div class="exp-period">Oct 2024 – Jun 2025</div>
+      </div>
+      <div class="exp-role">Full-Stack Developer</div>
+      <ul class="exp-bullets">
+        <li>Built microservices for Flights, Bags & Seat Offers adhering to IATA NDC standards for global airline partner integration.</li>
+        <li>Engineered REST & GraphQL APIs (Slice-by-Slice, Calendar Search) scaling to high concurrent query volumes.</li>
+        <li>Reduced bug occurrence by 30% via JUnit, TestNG & Mockito testing framework; cut deployment time by 50% with GitHub Actions & AWS CodePipeline.</li>
+      </ul>
+      <div class="exp-tech">
+        <span class="tech-pill">Java</span><span class="tech-pill">GraphQL</span><span class="tech-pill">MongoDB</span><span class="tech-pill">Angular</span><span class="tech-pill">Kafka</span><span class="tech-pill">AWS</span><span class="tech-pill">OAuth 2.0</span><span class="tech-pill">JWT</span><span class="tech-pill">Terraform</span>
+      </div>
+    </div>
+
+    <div class="exp-card">
+      <div class="exp-header">
+        <div class="exp-company">Cognizant Technology Solutions <span class="exp-client">· Aetna CVS</span></div>
+        <div class="exp-period">Aug 2020 – Dec 2022</div>
+      </div>
+      <div class="exp-role">Software Developer</div>
+      <ul class="exp-bullets">
+        <li>Engineered 10+ Spring Boot microservices for diagnostic and health claims, deployed on Azure AKS for Medicare applications.</li>
+        <li>Slashed response times by 25% via multithreaded optimization using CompletableFuture and Kafka consumers.</li>
+        <li>Built React dashboards for healthcare metrics, reducing time-to-insight for analysts.</li>
+      </ul>
+      <div class="exp-tech">
+        <span class="tech-pill">Java</span><span class="tech-pill">Spring Boot</span><span class="tech-pill">React</span><span class="tech-pill">Azure AKS</span><span class="tech-pill">Kafka</span><span class="tech-pill">CompletableFuture</span><span class="tech-pill">Linux</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="skills-section" id="skills">
+    <p class="section-eyebrow">// tech stack</p>
+    <h2 class="section-title">Skills</h2>
+
+    <div class="skills-group">
+      <div class="skills-group-title">Languages</div>
+      <div class="skills-chips">
+        <div class="skill-chip">Java</div><div class="skill-chip">Python</div><div class="skill-chip">TypeScript</div><div class="skill-chip">JavaScript</div><div class="skill-chip">SQL</div><div class="skill-chip">HTML / CSS</div>
+      </div>
+    </div>
+    <div class="skills-group">
+      <div class="skills-group-title">Frameworks</div>
+      <div class="skills-chips">
+        <div class="skill-chip">Spring Boot</div><div class="skill-chip">Spring Security</div><div class="skill-chip">Spring Batch</div><div class="skill-chip">Spring AI</div><div class="skill-chip">Angular</div><div class="skill-chip">React</div><div class="skill-chip">Hibernate</div><div class="skill-chip">PySpark</div>
+      </div>
+    </div>
+    <div class="skills-group">
+      <div class="skills-group-title">Cloud & DevOps</div>
+      <div class="skills-chips">
+        <div class="skill-chip">AWS</div><div class="skill-chip">Azure</div><div class="skill-chip">GCP</div><div class="skill-chip">Docker</div><div class="skill-chip">Kubernetes</div><div class="skill-chip">Terraform</div><div class="skill-chip">Jenkins</div><div class="skill-chip">GitHub Actions</div><div class="skill-chip">Helm</div>
+      </div>
+    </div>
+    <div class="skills-group">
+      <div class="skills-group-title">Databases</div>
+      <div class="skills-chips">
+        <div class="skill-chip">PostgreSQL</div><div class="skill-chip">MongoDB</div><div class="skill-chip">MySQL</div><div class="skill-chip">DynamoDB</div><div class="skill-chip">Cassandra</div><div class="skill-chip">Oracle</div>
+      </div>
+    </div>
+    <div class="skills-group">
+      <div class="skills-group-title">Messaging & APIs</div>
+      <div class="skills-chips">
+        <div class="skill-chip">Kafka</div><div class="skill-chip">RabbitMQ</div><div class="skill-chip">REST APIs</div><div class="skill-chip">GraphQL</div><div class="skill-chip">OAuth 2.0</div><div class="skill-chip">JWT</div><div class="skill-chip">WebSockets</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="certs" id="certs">
+    <p class="section-eyebrow">// credentials</p>
+    <h2 class="section-title">Certifications</h2>
+    <div class="cert-grid">
+      <div class="cert-card">
+        <div class="cert-badge">Microsoft Azure</div>
+        <div class="cert-name">Azure Data Engineer Associate (DP-203)</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-badge">Microsoft Azure</div>
+        <div class="cert-name">Azure Data Fundamentals (DP-900)</div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-badge">Google</div>
+        <div class="cert-name">Google Data Analyst Professional Certificate</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="education" id="education">
+    <p class="section-eyebrow">// academic background</p>
+    <h2 class="section-title">Education</h2>
+    <div class="edu-card">
+      <div>
+        <div class="edu-degree">M.S. Data Science & Applications</div>
+        <div class="edu-school">University at Buffalo, State University of New York</div>
+      </div>
+      <div class="edu-period">Jan 2023 – May 2024</div>
+    </div>
+    <div class="edu-card">
+      <div>
+        <div class="edu-degree">B.Tech Electronics & Communication Engineering</div>
+        <div class="edu-school">Lovely Professional University</div>
+      </div>
+      <div class="edu-period">Aug 2016 – Jun 2020</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="container">
+  <footer>
+    <div class="footer-name">Sai Chaitanya Dhanisetty</div>
+    <div class="footer-links">
+      <a href="https://github.com/hawkh" target="_blank">GitHub</a>
+      <a href="https://linkedin.com/in/SaiChaitanya" target="_blank">LinkedIn</a>
+      <a href="mailto:dhanisetty.chaitanya@gmail.com">Email</a>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
